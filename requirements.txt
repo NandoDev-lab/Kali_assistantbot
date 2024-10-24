@@ -1,0 +1,7 @@
+vosk
+pyautogui
+keyboard
+selenium
+transformers
+pyaudio
+PyPDF2
