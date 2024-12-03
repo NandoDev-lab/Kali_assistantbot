@@ -1,27 +1,31 @@
-import random
+import datetime
 import pyttsx3
-from modulos.voz.reconhecimento import ReconhecimentoVoz
 
 class Saudacao:
     def __init__(self):
-        self.saudacoes = [
-            "Olá, {nome}! Que bom te ver de novo!",
-            "Oi, {nome}! Como você está hoje?",
-            "Bem-vindo(a) de volta, {nome}! Vamos começar?",
-            "Olá, {nome}! Sempre um prazer falar com você!"
-        ]
         self.engine = pyttsx3.init()
-
-    def obter_nome(self, nome):
-        self.falar("Por favor, diga seu nome.")
-        nome = ReconhecimentoVoz()
-        return nome
-
-    def obter_saudacao(self, nome):
-        saudacao = random.choice(self.saudacoes).format(nome=nome)
-        self.falar(saudacao)
-        return saudacao
 
     def falar(self, texto):
         self.engine.say(texto)
         self.engine.runAndWait()
+
+    def obter_periodo_do_dia(self):
+        hora_atual = datetime.datetime.now().hour
+        if 6 <= hora_atual < 12:
+            return "manhã"
+        elif 12 <= hora_atual < 18:
+            return "tarde"
+        else:
+            return "noite"
+
+    def obter_saudacao(self, nome_usuario):
+        periodo = self.obter_periodo_do_dia()
+        if periodo == "manhã":
+            saudacao = f"Bom dia, {nome_usuario}! Como você está nesta manhã?"
+        elif periodo == "tarde":
+            saudacao = f"Boa tarde, {nome_usuario}! Como está a sua tarde?"
+        else:
+            saudacao = f"Boa noite, {nome_usuario}! Como foi seu dia?"
+
+        self.falar(saudacao)
+        return saudacao
